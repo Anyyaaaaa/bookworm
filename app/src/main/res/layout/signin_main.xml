@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     app:layout_constraintCircleRadius="36dp"
-    tools:context=".MainActivity">
+    tools:context=".SignInActivity">
 
     <Button
         android:id="@+id/regButton"
