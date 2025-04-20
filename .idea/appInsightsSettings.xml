@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.bookworm" />
+                  <option name="mobileSdkAppId" value="1:584889918719:android:ad82b4e79603fa09ded8ca" />
+                  <option name="projectId" value="bookworm-5a196" />
+                  <option name="projectNumber" value="584889918719" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
