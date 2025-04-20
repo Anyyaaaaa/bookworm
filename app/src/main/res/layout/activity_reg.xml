@@ -8,14 +8,14 @@
     tools:context=".RegActivity">
 
     <Button
-        android:id="@+id/regButton4"
+        android:id="@+id/regButton"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="377dp"
         android:layout_height="50dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_background"
         android:fontFamily="sans-serif-medium"
-        android:text="Увійти"
+        android:text="Зареєструватись"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:circularflow_defaultRadius="36dp"
@@ -23,11 +23,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText6"
+        app:layout_constraintTop_toBottomOf="@+id/guessPasswordEditText"
         app:layout_constraintVertical_bias="0.746" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText3"
+        android:id="@+id/loginEditText"
         android:layout_width="350dp"
         android:layout_height="55dp"
         android:layout_marginTop="52dp"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText4"
+        android:id="@+id/emailEditText"
         android:layout_width="350dp"
         android:layout_height="55dp"
         android:layout_marginTop="16dp"
@@ -56,10 +56,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText3" />
+        app:layout_constraintTop_toBottomOf="@+id/loginEditText" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText5"
+        android:id="@+id/passwordEditText"
         android:layout_width="350dp"
         android:layout_height="55dp"
         android:layout_marginTop="16dp"
@@ -72,10 +72,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText4" />
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText6"
+        android:id="@+id/guessPasswordEditText"
         android:layout_width="350dp"
         android:layout_height="55dp"
         android:layout_marginTop="16dp"
@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText5" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
     <TextView
         android:id="@+id/textView5"
@@ -140,7 +140,7 @@
         android:rotationY="-2"
         android:text="(:"
         android:textSize="96sp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputEditText3"
+        app:layout_constraintBottom_toTopOf="@+id/loginEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toEndOf="@+id/textView5"
