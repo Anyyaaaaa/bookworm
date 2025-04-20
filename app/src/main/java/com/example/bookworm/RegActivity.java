@@ -1,5 +1,6 @@
 package com.example.bookworm;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -57,6 +58,7 @@ public class RegActivity extends AppCompatActivity {
         String login = loginEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
+        String confirmPassword = guessPasswordEditText.getText().toString().trim();
 
         if(TextUtils.isEmpty(login)) {
             emailEditText.setError("Введіть логін");
@@ -73,6 +75,11 @@ public class RegActivity extends AppCompatActivity {
             return;
         }
 
+        if (!password.equals(confirmPassword)) {
+            guessPasswordEditText.setError("Паролі не збігаються");
+            return;
+        }
+
         if(password.length() < 8) {
             passwordEditText.setError("Пароль має бути не менше 8 символів");
             return;
@@ -83,6 +90,9 @@ public class RegActivity extends AppCompatActivity {
                     if(task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(RegActivity.this, "Реєстрація успішна!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(RegActivity.this, "Помилка реєстрації: " + task.getException().getMessage(),
                                 Toast.LENGTH_LONG).show();
