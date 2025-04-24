@@ -10,17 +10,20 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bookworm.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        FirebaseApp.initializeApp(this);
         replaceFragment(new HomeFragment());
 
 
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        BottomNavigationView nav = binding.nav;  // Використовуємо binding для доступу до навігації
+        BottomNavigationView nav = binding.nav;
 
         nav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
