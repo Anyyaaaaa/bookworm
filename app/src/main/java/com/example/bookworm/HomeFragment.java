@@ -29,6 +29,10 @@ public class HomeFragment extends Fragment {
     private BookAdapter adapter;
     private List<Book> bookList;
 
+    private RecyclerView carouselRecyclerView;
+    private List<Book> carouselList;
+    private BookAdapter carouselAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,7 +44,27 @@ public class HomeFragment extends Fragment {
         adapter = new BookAdapter(getContext(), bookList);
         recyclerView.setAdapter(adapter);
 
+
+        carouselRecyclerView = view.findViewById(R.id.carouselBooks);
+        carouselRecyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
+        );
+
+        carouselList = new ArrayList<>();
+        carouselAdapter = new BookAdapter(getContext(), carouselList);
+        carouselRecyclerView.setAdapter(carouselAdapter);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("popular_books")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        Book book = document.toObject(Book.class);
+                        carouselList.add(book);
+                    }
+                    carouselAdapter.notifyDataSetChanged();
+                });
+
+
         db.collection("book")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -53,6 +77,10 @@ public class HomeFragment extends Fragment {
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
         return view;
+
+
+
+
     }
 }
 

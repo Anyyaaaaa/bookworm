@@ -1,5 +1,6 @@
 package Class;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.bookworm.BookDetailActivity;
 import com.example.bookworm.R;
 import android.content.Context;
 import com.squareup.picasso.Picasso;
@@ -38,9 +41,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         if (book.getAuthor() != null && !book.getAuthor().isEmpty()) {
             holder.author.setText(book.getAuthor());
         } else {
-            holder.author.setText("Unknown Author");  // Встановити текст за замовчуванням, якщо автора немає
+            holder.author.setText("Unknown Author");
         }
         Picasso.get().load(book.getImageUrl()).into(holder.image);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, BookDetailActivity.class);
+            intent.putExtra("title", book.getTitle());
+            intent.putExtra("author", book.getAuthor());
+            intent.putExtra("imageUrl", book.getImageUrl());
+            intent.putExtra("description", book.getDescription()); // це важливо!
+            context.startActivity(intent);
+        });
+
     }
 
     @Override
@@ -57,7 +70,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             super(itemView);
             image = itemView.findViewById(R.id.bookImage);
             title = itemView.findViewById(R.id.bookTitle);
-            author = itemView.findViewById(R.id.bookAuthor);  // Ініціалізація TextView для автора
+            author = itemView.findViewById(R.id.bookAuthor);
         }
     }
 }

@@ -3,6 +3,9 @@ public class Book {
     private String title;
     private String author;
     private String imageUrl;
+    private String description;
+
+
 
 
     public Book() {}
@@ -16,4 +19,5 @@ public class Book {
     public String getTitle() { return title; }
     public String getAuthor(){return author;}
     public String getImageUrl() { return imageUrl; }
+    public String getDescription() { return description; }
 }
