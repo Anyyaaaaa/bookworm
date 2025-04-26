@@ -1,17 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FAFAFA">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:textSize="26sp"
-        android:text="profile" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/logoutButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="280dp"
+                    android:background="@drawable/rounder"
+                    android:backgroundTint="#EF5350"
+                    android:elevation="4dp"
+                    android:padding="12dp"
+                    android:text="@string/logout"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Аватар і вітання -->
+        <ImageView
+            android:id="@+id/profileAvatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_background"
+        android:elevation="8dp"/>
+
+        <TextView
+            android:id="@+id/profileWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_text"
+        android:textSize="22sp"
+        android:textColor="#212121"
+        android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/profileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reader"
+        android:textSize="18sp"
+        android:textColor="#757575"
+        android:layout_marginBottom="24dp"/>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/edit"/>
+
+                    <TextView
+                        android:id="@+id/libraryButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/edit_profile"
+                        android:textColor="#212121"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/day"/>
+
+                    <TextView
+                        android:id="@+id/bookmarksButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/reading_mode"
+                        android:textColor="#212121"
+                        android:textSize="18sp" />
+
+                    <Switch
+                        android:id="@+id/switch2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                         />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/badge"/>
+
+                    <TextView
+                        android:id="@+id/settingsButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/achievements"
+                        android:textColor="#212121"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/support"/>
+
+                    <TextView
+                        android:id="@+id/supportButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/support"
+                        android:textColor="#212121"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+</ScrollView>

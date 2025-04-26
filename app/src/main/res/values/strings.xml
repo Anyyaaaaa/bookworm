@@ -13,4 +13,12 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_text">Ласкаво просимо!</string>
+    <string name="reader">Читач</string>
+    <string name="edit_profile">Редагувати профіль</string>
+    <string name="reading_mode">Режим читання</string>
+    <string name="achievements">Досягнення</string>
+    <string name="support">Підтримка</string>
+    <string name="logout">Вийти</string>
+
 </resources>

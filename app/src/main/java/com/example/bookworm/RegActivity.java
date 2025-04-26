@@ -15,15 +15,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import Class.UserProfile;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegActivity extends AppCompatActivity {
 
     private EditText loginEditText, emailEditText, passwordEditText, guessPasswordEditText;
     private Button regButton;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class RegActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         loginEditText = findViewById(R.id.loginEditText);
         emailEditText = findViewById(R.id.emailEditText);
@@ -89,10 +93,26 @@ public class RegActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if(task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(RegActivity.this, "Реєстрація успішна!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(RegActivity.this, SignInActivity.class);
-                        startActivity(intent);
-                        finish();
+
+                        // Додаємо додаткову інформацію про користувача в Firestore
+                        if (user != null) {
+                            // Створення об'єкта для збереження в Firestore
+                            UserProfile userProfile = new UserProfile(login, email);
+
+                            // Зберігаємо логін разом з email в Firestore
+                            db.collection("users").document(user.getUid())
+                                    .set(userProfile)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(RegActivity.this, "Реєстрація успішна!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(RegActivity.this, SignInActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(RegActivity.this, "Помилка збереження додаткових даних", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+
                     } else {
                         Toast.makeText(RegActivity.this, "Помилка реєстрації: " + task.getException().getMessage(),
                                 Toast.LENGTH_LONG).show();
