@@ -5,14 +5,14 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
 
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView bookImage;
@@ -35,18 +35,70 @@ public class BookDetailActivity extends AppCompatActivity {
         String title = intent.getStringExtra("title");
         String author = intent.getStringExtra("author");
         String imageUrl = intent.getStringExtra("imageUrl");
-        String description = intent.getStringExtra("description");
+        String descriptionText = intent.getStringExtra("description");
+        String bookUrl = intent.getStringExtra("bookUrl");
 
         bookTitle.setText(title);
         bookAuthor.setText(author);
-        bookDescription.setText(description);
+        bookDescription.setText(descriptionText);
 
         Picasso.get().load(imageUrl).into(bookImage);
 
         readButton.setOnClickListener(v -> {
-            // Дія при натисканні на "Читати"
-            // Наприклад, відкриття PDF або просто тост
-            // startActivity(new Intent(this, ReaderActivity.class));
+            if (bookUrl != null && !bookUrl.isEmpty()) {
+                downloadAndOpenBook(bookUrl);
+            } else {
+                Toast.makeText(BookDetailActivity.this, "URL книги недоступний", Toast.LENGTH_SHORT).show();
+            }
         });
+
+        TextView showMore = findViewById(R.id.showMore);
+
+        showMore.setOnClickListener(v -> {
+            if (bookDescription.getMaxLines() == 4) {
+                bookDescription.setMaxLines(Integer.MAX_VALUE);
+                showMore.setText("Показати менше");
+            } else {
+                bookDescription.setMaxLines(4);
+                showMore.setText("Показати більше");
+            }
+        });
+    }
+
+    private void downloadAndOpenBook(String bookUrl) {
+        try {
+            java.net.URL url = new java.net.URL(bookUrl);
+
+            // ВИПРАВЛЕНО: Спочатку визначаємо розширення
+            String fileExtension = bookUrl.contains(".pdf") ? ".pdf" : ".epub";
+            File localFile = File.createTempFile("tempBook", fileExtension);
+
+            new Thread(() -> {
+                try (java.io.InputStream in = url.openStream();
+                     java.io.FileOutputStream out = new java.io.FileOutputStream(localFile)) {
+
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, bytesRead);
+                    }
+
+                    runOnUiThread(() -> {
+                        Intent intent = new Intent(this, ReaderActivity.class);
+                        intent.putExtra("book_path", localFile.getAbsolutePath());
+                        intent.putExtra("book_type", fileExtension.equals(".pdf") ? "pdf" : "epub");
+                        startActivity(intent);
+                    });
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(this, "Не вдалося завантажити книгу", Toast.LENGTH_SHORT).show());
+                }
+            }).start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Помилка URL", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -1,16 +1,17 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@android:color/white">
+    android:background="@color/background_color">
 
-    <androidx.cardview.widget.CardView
+    <!-- ScrollView для прокрутки вмісту -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="16dp"
-        card_view:cardElevation="6dp"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/bottomButtons">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,70 +19,97 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Верхній блок: Обкладинка + Інформація + Прогрес -->
-            <LinearLayout
+            <!-- CardView для основної інформації -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="top">
+                card_view:cardCornerRadius="24dp"
+                card_view:cardElevation="8dp"
+                android:layout_marginBottom="24dp"
+                card_view:cardBackgroundColor="@android:color/white">
 
-                <!-- Обкладинка -->
-                <ImageView
-                    android:id="@+id/detailImage"
-                    android:layout_width="130dp"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/rounder" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <!-- Назва, Автор, Прогрес -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/detailTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Назва книги"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_marginBottom="8dp" />
-
-                    <TextView
-                        android:id="@+id/detailAuthor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Автор"
-                        android:textStyle="italic"
-                        android:textSize="16sp"
-                        android:textColor="#666666"
-                        android:layout_marginBottom="16dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="70dp"
-                        android:text="Прогрес читання"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="4dp" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
+                    <!-- Обкладинка на фон -->
+                    <ImageView
+                        android:id="@+id/detailImage"
                         android:layout_width="match_parent"
-                        android:layout_height="12dp"
-                        android:progress="50"
-                        android:max="100"
-                        android:progressTint="@color/purple_500"
-                        android:backgroundTint="#E0E0E0"
-                        android:indeterminate="false" />
-                </LinearLayout>
-            </LinearLayout>
+                        android:layout_height="450dp"
+                        android:scaleType="centerCrop"/>
+
+                    <!-- Затемнення картинки -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="450dp"
+                        android:background="#80000000" />
+
+                    <!-- Контейнер для тексту -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="450dp"
+                        android:orientation="vertical"
+                        android:gravity="bottom"
+                        android:padding="20dp">
+
+                        <!-- Назва -->
+                        <TextView
+                            android:id="@+id/detailTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Назва"
+                            android:textColor="@android:color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <!-- Автор -->
+                        <TextView
+                            android:id="@+id/detailAuthor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Автор"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp"
+                            android:layout_marginTop="6dp" />
+
+                        <!-- Лайки, перегляди -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="13.8K"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" ♥ 71.8K"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                android:layout_marginStart="12dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" 👁 266.5K"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                android:layout_marginStart="12dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <!-- Анотація -->
             <TextView
@@ -89,43 +117,77 @@
                 android:layout_height="wrap_content"
                 android:text="Анотація"
                 android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="6dp" />
+                android:textSize="18sp"
+                android:textColor="@color/title_color"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="8dp" />
 
             <TextView
                 android:id="@+id/detailDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Анотація книги..."
-                android:textColor="#444444"
-                android:textSize="14sp"
+                android:textColor="@color/description_color"
+                android:textSize="15sp"
                 android:lineSpacingExtra="6dp"
-                android:layout_marginBottom="20dp" />
+                android:maxLines="4"
+                android:ellipsize="end" />
 
-            <!-- Кнопка читати -->
-            <Button
-                android:id="@+id/readButton"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/showMore"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Читати"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:background="@drawable/button_background"
-                android:layout_marginBottom="12dp"
-                android:padding="12dp" />
+                android:text="Показати більше"
+                android:textColor="@color/link_color"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true" />
 
-            <!-- Кнопка додати в закладки -->
-            <Button
-                android:id="@+id/bookmarkButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Додати в закладки"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:background="@color/teal_700"
-                android:padding="12dp" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</ScrollView>
+    </ScrollView>
+
+    <!-- Нижній блок з кнопками -->
+    <LinearLayout
+        android:id="@+id/bottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:padding="16dp"
+        android:layout_alignParentBottom="true">
+
+        <!-- Кнопка "Читати" -->
+        <Button
+            android:id="@+id/readButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/button_color"
+            android:background="@drawable/button_background"
+            android:text="Читати"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:elevation="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Кнопка "Додати в улюблені" (кругла) -->
+        <ImageButton
+            android:id="@+id/favoriteButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/favorite_color"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/pin"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:padding="15dp"
+            android:elevation="6dp"
+            android:contentDescription="Додати в улюблені"
+            card_view:tint="@color/white" />
+
+    </LinearLayout>
+
+</RelativeLayout>
