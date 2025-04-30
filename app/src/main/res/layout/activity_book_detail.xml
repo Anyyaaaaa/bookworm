@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <!-- ScrollView для прокрутки вмісту -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,9 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
 
-            <!-- CardView для основної інформації -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,8 +47,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="450dp"
-                        android:orientation="vertical"
                         android:gravity="bottom"
+                        android:orientation="vertical"
                         android:padding="20dp">
 
                         <!-- Назва -->
@@ -68,18 +66,18 @@
                             android:id="@+id/detailAuthor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
                             android:text="Автор"
                             android:textColor="@android:color/white"
-                            android:textSize="14sp"
-                            android:layout_marginTop="6dp" />
+                            android:textSize="14sp" />
 
                         <!-- Лайки, перегляди -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginTop="12dp"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -91,18 +89,26 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
                                 android:text=" ♥ 71.8K"
                                 android:textColor="@android:color/white"
-                                android:textSize="14sp"
-                                android:layout_marginStart="12dp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
                                 android:text=" 👁 266.5K"
                                 android:textColor="@android:color/white"
-                                android:textSize="14sp"
-                                android:layout_marginStart="12dp" />
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="70dp"
+                                android:text="Рейтинг 4,8⭐"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -111,7 +117,28 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Анотація -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Жанр"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/title_color"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/buttonGenre"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounder"
+                android:text="Жанр книги"
+                android:textColor="@color/black"
+                android:layout_marginBottom="20dp"
+                android:textSize="12sp"
+                android:gravity="center" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,7 +171,85 @@
                 android:clickable="true"
                 android:focusable="true" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Відгуки"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/title_color"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rounder"
+                android:padding="16dp"
+                android:elevation="4dp">
+
+                <RatingBar
+                    android:id="@+id/reviewRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="4.0"
+                    android:rating="0"
+                    android:layout_marginBottom="12dp"
+                    android:isIndicator="false"
+                    style="?android:attr/ratingBarStyleSmall" />
+
+                <!-- Поле введення відгуку -->
+                <EditText
+                    android:id="@+id/reviewInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Напишіть ваш відгук..."
+                    android:background="@android:color/white"
+                    android:padding="12dp"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#888888"
+                    android:layout_marginBottom="12dp"
+                    android:minHeight="80dp"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:scrollbars="vertical" />
+
+
+                <!-- Кнопка надсилання -->
+                <Button
+                    android:id="@+id/submitReviewButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Надіслати"
+                    android:backgroundTint="@color/link_color"
+                    android:textColor="@android:color/white"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp"
+                    android:layout_gravity="end" />
+
+                <!-- Приклад збереженого відгуку -->
+                <TextView
+                    android:id="@+id/lastReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Останній відгук буде тут..."
+                    android:textColor="@color/black"
+                    android:layout_marginTop="16dp"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
         </LinearLayout>
+
+
+
+
+
+
+
+
+
     </ScrollView>
 
     <!-- Нижній блок з кнопками -->
@@ -164,7 +269,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/button_color"
-            android:background="@drawable/button_background"
+            android:background="@drawable/btn_style"
             android:text="Читати"
             android:textColor="@android:color/white"
             android:textSize="18sp"
@@ -178,9 +283,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            android:backgroundTint="@color/favorite_color"
-            android:background="@drawable/circle_background"
-            android:src="@drawable/pin"
+            android:backgroundTint="@color/colorAccent"
+            android:background="@drawable/btn_imagecircle"
+            android:src="@drawable/ic_pin"
             android:scaleType="centerInside"
             android:adjustViewBounds="true"
             android:padding="15dp"
@@ -189,5 +294,4 @@
             card_view:tint="@color/white" />
 
     </LinearLayout>
-
 </RelativeLayout>

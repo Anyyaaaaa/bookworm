@@ -1,4 +1,4 @@
-package Class;
+package Paterns;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,13 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.bookworm.BookDetailActivity;
 import com.example.bookworm.R;
 import android.content.Context;
-import com.squareup.picasso.Picasso;
+import Class.Book;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private Context context;
@@ -38,12 +39,18 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = bookList.get(position);
         holder.title.setText(book.getTitle());
+
         if (book.getAuthor() != null && !book.getAuthor().isEmpty()) {
             holder.author.setText(book.getAuthor());
         } else {
             holder.author.setText("Unknown Author");
         }
-        Picasso.get().load(book.getImageUrl()).into(holder.image);
+
+        Glide.with(context)
+                .load(book.getImageUrl())
+                .centerCrop() // Обрізає і центрирує картинку по центру
+                .transform(new RoundedCorners(80)) //закруглення
+                .into(holder.image);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, BookDetailActivity.class);
@@ -52,10 +59,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             intent.putExtra("imageUrl", book.getImageUrl());
             intent.putExtra("description", book.getDescription());
             intent.putExtra("bookUrl", book.getBookUrl());
+            intent.putExtra("genre", book.getGenre());
             context.startActivity(intent);
         });
-
     }
+
 
     @Override
     public int getItemCount() {

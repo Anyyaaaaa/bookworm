@@ -1,9 +1,8 @@
-package Class;
+package Paterns;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import com.squareup.picasso.Transformation;
 
 public class CircleTransform implements Transformation {
@@ -26,7 +25,6 @@ public class CircleTransform implements Transformation {
         paint.setFilterBitmap(true);
         paint.setDither(true);
 
-        // Малюємо круг в центрі
         canvas.drawCircle(size / 2f, size / 2f, size / 2f, paint);
         paint.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(squaredBitmap, 0, 0, paint);

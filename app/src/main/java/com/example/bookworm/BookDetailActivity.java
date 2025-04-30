@@ -17,7 +17,7 @@ import java.io.IOException;
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView bookImage;
     private TextView bookTitle, bookAuthor, bookDescription;
-    private Button readButton;
+    private Button readButton, buttonGenre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,7 @@ public class BookDetailActivity extends AppCompatActivity {
         bookAuthor = findViewById(R.id.detailAuthor);
         bookDescription = findViewById(R.id.detailDescription);
         readButton = findViewById(R.id.readButton);
+        buttonGenre=findViewById(R.id.buttonGenre);
 
         // Отримуємо дані з Intent
         Intent intent = getIntent();
@@ -37,10 +38,17 @@ public class BookDetailActivity extends AppCompatActivity {
         String imageUrl = intent.getStringExtra("imageUrl");
         String descriptionText = intent.getStringExtra("description");
         String bookUrl = intent.getStringExtra("bookUrl");
+        String genre = intent.getStringExtra("genre");
 
         bookTitle.setText(title);
         bookAuthor.setText(author);
         bookDescription.setText(descriptionText);
+
+        if (genre != null && !genre.isEmpty()) {
+            buttonGenre.setText(genre);
+        } else {
+            buttonGenre.setText("Невідомо");
+        }
 
         Picasso.get().load(imageUrl).into(bookImage);
 
@@ -68,8 +76,6 @@ public class BookDetailActivity extends AppCompatActivity {
     private void downloadAndOpenBook(String bookUrl) {
         try {
             java.net.URL url = new java.net.URL(bookUrl);
-
-            // ВИПРАВЛЕНО: Спочатку визначаємо розширення
             String fileExtension = bookUrl.contains(".pdf") ? ".pdf" : ".epub";
             File localFile = File.createTempFile("tempBook", fileExtension);
 

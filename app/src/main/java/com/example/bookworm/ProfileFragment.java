@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
-import Class.CircleTransform;
+import Paterns.CircleTransform;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -24,10 +24,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class ProfileFragment extends Fragment {

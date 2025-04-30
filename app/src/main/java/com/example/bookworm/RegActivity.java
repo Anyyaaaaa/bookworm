@@ -93,13 +93,8 @@ public class RegActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if(task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-
-                        // Додаємо додаткову інформацію про користувача в Firestore
                         if (user != null) {
-                            // Створення об'єкта для збереження в Firestore
                             UserProfile userProfile = new UserProfile(login, email);
-
-                            // Зберігаємо логін разом з email в Firestore
                             db.collection("users").document(user.getUid())
                                     .set(userProfile)
                                     .addOnSuccessListener(aVoid -> {

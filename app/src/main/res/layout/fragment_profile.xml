@@ -46,7 +46,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
-            android:background="@drawable/circle_background"
+            android:background="@drawable/btn_imagecircle"
         android:elevation="8dp"/>
 
         <TextView
@@ -84,7 +84,7 @@
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:background="@drawable/edit"/>
+                        android:background="@drawable/ic_edit"/>
 
                     <TextView
                         android:id="@+id/libraryButton"
@@ -106,7 +106,7 @@
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:background="@drawable/day"/>
+                        android:background="@drawable/ic_day"/>
 
                     <TextView
                         android:id="@+id/bookmarksButton"
@@ -136,7 +136,7 @@
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:background="@drawable/badge"/>
+                        android:background="@drawable/ic_badge"/>
 
                     <TextView
                         android:id="@+id/settingsButton"
@@ -159,7 +159,7 @@
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:background="@drawable/support"/>
+                        android:background="@drawable/ic_support"/>
 
                     <TextView
                         android:id="@+id/supportButton"
