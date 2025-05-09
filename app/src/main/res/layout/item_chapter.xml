@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:orientation="horizontal"
+    android:background="@android:color/white"> <!-- Початковий фон для елемента -->
+
+    <TextView
+        android:id="@+id/chapterTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Chapter Title"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:layout_weight="1" />
+</LinearLayout>

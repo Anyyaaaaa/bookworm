@@ -30,6 +30,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <Button
+                        android:id="@+id/listenButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:text="🎧"
+                        android:background="@drawable/btn_style"
+                        android:textColor="#755C5C"
+                        android:textSize="18sp"
+                        android:elevation="4dp"
+                        android:layout_gravity="top|end"
+                        android:contentDescription="Слухати книгу" />
+
                     <!-- Обкладинка на фон -->
                     <ImageView
                         android:id="@+id/detailImage"
@@ -80,6 +93,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/readbook"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="13.8K"
@@ -103,10 +117,11 @@
                                 android:textSize="14sp" />
 
                             <TextView
+                                android:id="@+id/ratingAve"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="70dp"
-                                android:text="Рейтинг 4,8⭐"
+                                android:text="Рейтинг 0.0⭐"
                                 android:textColor="@android:color/white"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -190,14 +205,14 @@
 
                 <RatingBar
                     android:id="@+id/reviewRating"
+                    style="@style/Widget.AppCompat.RatingBar.Indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="4.0"
-                    android:rating="0"
                     android:layout_marginBottom="12dp"
                     android:isIndicator="false"
-                    style="?android:attr/ratingBarStyleSmall" />
+                    android:numStars="5"
+                    android:rating="0"
+                    android:stepSize="0.5" />
 
                 <!-- Поле введення відгуку -->
                 <EditText
@@ -229,7 +244,6 @@
                     android:paddingRight="24dp"
                     android:layout_gravity="end" />
 
-                <!-- Приклад збереженого відгуку -->
                 <TextView
                     android:id="@+id/lastReview"
                     android:layout_width="match_parent"

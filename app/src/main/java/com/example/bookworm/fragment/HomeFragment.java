@@ -1,4 +1,4 @@
-package com.example.bookworm;
+package com.example.bookworm.fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookworm.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Class.Book;
-import Paterns.BookAdapter;
+import paterns.adapters.adapters.BookAdapter;
 
 public class HomeFragment extends Fragment {
 
@@ -70,7 +71,7 @@ public class HomeFragment extends Fragment {
         popularAdapter = new BookAdapter(getContext(), filteredPopularList);
         carouselBooks.setAdapter(popularAdapter);
 
-        // Триллери/детективи
+        // Триллери
         recyclerBooks_2 = view.findViewById(R.id.recyclerBooks_2);
         recyclerBooks_2.setLayoutManager(new GridLayoutManager(getContext(), 3));
         thrillerAdapter = new BookAdapter(getContext(), filteredThrillerList);

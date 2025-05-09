@@ -1,4 +1,4 @@
-package com.example.bookworm;
+package com.example.bookworm.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -6,18 +6,21 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
-import Paterns.CircleTransform;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
+import com.example.bookworm.R;
+import com.example.bookworm.SignInActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,30 +33,45 @@ import java.io.IOException;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView profileName;
+    private EditText profileName;
     private ImageView profileAvatar;
-
+    private Button logoutButton, saveButton;
+    private LinearLayout editProfileLayout;
     private static final int PICK_IMAGE_REQUEST = 1;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
     public ProfileFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        profileName = view.findViewById(R.id.profileName);
+        profileName = view.findViewById(R.id.profileName); // Тепер EditText
         profileAvatar = view.findViewById(R.id.profileAvatar);
+        logoutButton = view.findViewById(R.id.logoutButton);
+        saveButton = view.findViewById(R.id.saveButton); // Кнопка збереження
+        editProfileLayout = view.findViewById(R.id.editProfileLayout);
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        profileAvatar.setOnClickListener(v -> openGallery());
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        // Натискання на кнопку редагування профілю
+        editProfileLayout.setOnClickListener(v -> enableProfileEditing());
+
+        // Вихід з Firebase
+        logoutButton.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(requireActivity(), SignInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            requireActivity().finish();
+        });
+
+        // Завантажуємо дані користувача з Firestore
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            // Завантажуємо дані користувача з Firestore
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("users").document(currentUser.getUid())
                     .get()
@@ -62,19 +80,11 @@ public class ProfileFragment extends Fragment {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 String userName = document.getString("login");
-                                if (userName != null && !userName.isEmpty()) {
-                                    profileName.setText(userName);
-                                } else {
-                                    profileName.setText(currentUser.getEmail());
-                                }
+                                profileName.setText(userName != null && !userName.isEmpty() ? userName : currentUser.getEmail());
 
-                                // Завантажуємо фото профілю, якщо є URL
                                 String imageUrl = document.getString("profileImageUrl");
                                 if (imageUrl != null && !imageUrl.isEmpty()) {
-                                    Picasso.get()
-                                            .load(imageUrl)
-                                            .transform(new CircleTransform())
-                                            .into(profileAvatar);
+                                    Picasso.get().load(imageUrl).into(profileAvatar);
                                 }
                             } else {
                                 profileName.setText(currentUser.getEmail());
@@ -87,7 +97,48 @@ public class ProfileFragment extends Fragment {
             profileName.setText("Гість");
         }
 
+        saveButton.setOnClickListener(v -> saveProfileChanges());
+
+        // Один раз додаємо обробник на клік для аватара
+        profileAvatar.setOnClickListener(v -> {
+            if (editProfileLayout.getVisibility() == View.VISIBLE) {
+                openGallery();  // дозволяємо змінювати фото тільки в режимі редагування
+            } else {
+                Toast.makeText(getActivity(), "Для зміни фото профілю спочатку активуйте редагування.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
+    }
+
+    private void enableProfileEditing() {
+        if (editProfileLayout.getVisibility() == View.VISIBLE) {
+            profileName.setFocusableInTouchMode(true);
+            profileName.setFocusable(true);
+            profileName.setClickable(true);
+
+            editProfileLayout.setVisibility(View.GONE);
+            saveButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void saveProfileChanges() {
+        String newUserName = profileName.getText().toString().trim();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null && !newUserName.isEmpty()) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("users").document(currentUser.getUid())
+                    .update("login", newUserName)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getActivity(), "Логін оновлено", Toast.LENGTH_SHORT).show();
+                        profileName.setFocusable(false);
+                        editProfileLayout.setVisibility(View.VISIBLE);  // Показуємо кнопку редагування
+                        saveButton.setVisibility(View.GONE);  // Сховуємо кнопку збереження
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getActivity(), "Не вдалося оновити логін", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
     // Відкриття галереї для вибору фото
@@ -108,7 +159,6 @@ public class ProfileFragment extends Fragment {
                 Bitmap circularBitmap = getCircularBitmap(bitmap);
                 profileAvatar.setImageBitmap(circularBitmap);
                 uploadImageToFirebase(imageUri);
-
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(getActivity(), "Не вдалося завантажити зображення", Toast.LENGTH_SHORT).show();
@@ -155,8 +205,7 @@ public class ProfileFragment extends Fragment {
         Path path = new Path();
         path.addCircle(width / 2f, width / 2f, width / 2f, Path.Direction.CW);
         canvas.clipPath(path);
-        canvas.drawBitmap(bitmap, 0, 0, null);
+        canvas.drawBitmap(bitmap, (width - bitmap.getWidth()) / 2f, (width - bitmap.getHeight()) / 2f, null);
         return output;
     }
 }
-

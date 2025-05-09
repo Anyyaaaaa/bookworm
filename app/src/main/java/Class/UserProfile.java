@@ -1,19 +1,12 @@
 package Class;
 
-public class UserProfile {
+public class UserProfile extends User {
     private String login;
-    private String email;
+
+    public UserProfile(){}
 
     public UserProfile(String login, String email) {
+        super(email);
         this.login = login;
-        this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getEmail() {
-        return email;
     }
 }

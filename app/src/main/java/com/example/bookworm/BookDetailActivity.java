@@ -3,43 +3,155 @@ package com.example.bookworm;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.IOException;
+import Class.Library;
+import Class.Book;
+import Class.Review;
+import paterns.adapters.facade.bookUtils;
+import paterns.adapters.facade.reviewUtils;
 
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView bookImage;
-    private TextView bookTitle, bookAuthor, bookDescription;
-    private Button readButton, buttonGenre;
+    private TextView bookTitle, bookAuthor, bookDescription, lastReview, ratingAve;
+    private Button readButton, buttonGenre, submitReviewButton, listenButton;
+    private EditText reviewInput;
+    private RatingBar reviewRating;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+        Intent intent = getIntent();
+
+        String title = intent.getStringExtra("title");
+        String author = intent.getStringExtra("author");
+        String imageUrl = intent.getStringExtra("imageUrl");
+        String bookUrl = intent.getStringExtra("bookUrl");
+        String genre = intent.getStringExtra("genre");
 
         bookImage = findViewById(R.id.detailImage);
         bookTitle = findViewById(R.id.detailTitle);
         bookAuthor = findViewById(R.id.detailAuthor);
         bookDescription = findViewById(R.id.detailDescription);
+        lastReview = findViewById(R.id.lastReview);
+        ratingAve = findViewById(R.id.ratingAve);
+
         readButton = findViewById(R.id.readButton);
-        buttonGenre=findViewById(R.id.buttonGenre);
+        buttonGenre = findViewById(R.id.buttonGenre);
+        ImageButton favoriteButton = findViewById(R.id.favoriteButton);
 
-        // Отримуємо дані з Intent
-        Intent intent = getIntent();
-        String title = intent.getStringExtra("title");
-        String author = intent.getStringExtra("author");
-        String imageUrl = intent.getStringExtra("imageUrl");
+        reviewInput = findViewById(R.id.reviewInput);
+        reviewRating = findViewById(R.id.reviewRating);
+        submitReviewButton = findViewById(R.id.submitReviewButton);
+
+        listenButton = findViewById(R.id.listenButton);
+
+        listenButton.setOnClickListener(v -> {
+            String selectedTitle = title;
+            AppCompatActivity activity = this;
+
+            FirebaseFirestore.getInstance()
+                    .collection("audioBook")
+
+                    .whereEqualTo("title", selectedTitle)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+                            String bookId = document.getId();
+
+                            Intent intents = new Intent(activity, AudioBookActivity.class);
+                            intents.putExtra("bookId", bookId);
+                            intents.putExtra("title", selectedTitle);
+                            activity.startActivity(intents);
+                        } else {
+                            Toast.makeText(activity, "Аудіокнига відсутня", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(activity, "Помилка з'єднання з базою", Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+        submitReviewButton.setOnClickListener(v -> {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                float rating = reviewRating.getRating();
+                String text = reviewInput.getText().toString().trim();
+
+                if (text.isEmpty()) {
+                    Toast.makeText(this, "Будь ласка, введіть текст відгуку", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Review review = new Review(
+                        user.getUid(),
+                        user.getEmail(),
+                        rating,
+                        text,
+                        title
+                );
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("reviews")
+                        .add(review)
+                        .addOnSuccessListener(doc -> {
+                            Toast.makeText(this, "Відгук збережено!", Toast.LENGTH_SHORT).show();
+                            reviewInput.setText("");
+                            reviewRating.setRating(0f);
+                            reviewUtils.updateAverageRating(BookDetailActivity.this, title, ratingAve);
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Помилка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+            }
+        });
+
+        favoriteButton.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(BookDetailActivity.this, v);
+            popupMenu.getMenuInflater().inflate(R.menu.category_menu, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                String selectedCategory = "";
+
+                if (item.getItemId() == R.id.menu_reading) {
+                    selectedCategory = "Читаю";
+                } else if (item.getItemId() == R.id.menu_toread) {
+                    selectedCategory = "Буду читати";
+                } else if (item.getItemId() == R.id.menu_favorites) {
+                    selectedCategory = "Улюблене";
+                } else if (item.getItemId() == R.id.menu_finished) {
+                    selectedCategory = "Прочитано";
+                }
+
+                if (!selectedCategory.isEmpty()) {
+                    Book book = new Book(title, author, imageUrl, bookUrl, genre);
+                    Library library = new Library();
+                    library.addBookToLibrary(book, selectedCategory);
+
+                    Toast.makeText(BookDetailActivity.this,
+                            "Додано до \"" + item.getTitle() + "\"", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            });
+            popupMenu.show();
+        });
+
         String descriptionText = intent.getStringExtra("description");
-        String bookUrl = intent.getStringExtra("bookUrl");
-        String genre = intent.getStringExtra("genre");
-
         bookTitle.setText(title);
         bookAuthor.setText(author);
         bookDescription.setText(descriptionText);
@@ -54,14 +166,13 @@ public class BookDetailActivity extends AppCompatActivity {
 
         readButton.setOnClickListener(v -> {
             if (bookUrl != null && !bookUrl.isEmpty()) {
-                downloadAndOpenBook(bookUrl);
+                bookUtils.downloadAndOpenBook(BookDetailActivity.this, bookUrl);
             } else {
                 Toast.makeText(BookDetailActivity.this, "URL книги недоступний", Toast.LENGTH_SHORT).show();
             }
         });
 
         TextView showMore = findViewById(R.id.showMore);
-
         showMore.setOnClickListener(v -> {
             if (bookDescription.getMaxLines() == 4) {
                 bookDescription.setMaxLines(Integer.MAX_VALUE);
@@ -71,40 +182,7 @@ public class BookDetailActivity extends AppCompatActivity {
                 showMore.setText("Показати більше");
             }
         });
-    }
-
-    private void downloadAndOpenBook(String bookUrl) {
-        try {
-            java.net.URL url = new java.net.URL(bookUrl);
-            String fileExtension = bookUrl.contains(".pdf") ? ".pdf" : ".epub";
-            File localFile = File.createTempFile("tempBook", fileExtension);
-
-            new Thread(() -> {
-                try (java.io.InputStream in = url.openStream();
-                     java.io.FileOutputStream out = new java.io.FileOutputStream(localFile)) {
-
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-                    while ((bytesRead = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, bytesRead);
-                    }
-
-                    runOnUiThread(() -> {
-                        Intent intent = new Intent(this, ReaderActivity.class);
-                        intent.putExtra("book_path", localFile.getAbsolutePath());
-                        intent.putExtra("book_type", fileExtension.equals(".pdf") ? "pdf" : "epub");
-                        startActivity(intent);
-                    });
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    runOnUiThread(() -> Toast.makeText(this, "Не вдалося завантажити книгу", Toast.LENGTH_SHORT).show());
-                }
-            }).start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Помилка URL", Toast.LENGTH_SHORT).show();
-        }
+        reviewUtils.displayLastReview(BookDetailActivity.this, title, lastReview);
+        reviewUtils.updateAverageRating(BookDetailActivity.this, title, ratingAve);
     }
 }

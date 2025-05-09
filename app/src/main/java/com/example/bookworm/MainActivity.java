@@ -13,11 +13,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bookworm.databinding.ActivityMainBinding;
+import com.example.bookworm.fragment.HomeFragment;
+import com.example.bookworm.fragment.LibraryFragment;
+import com.example.bookworm.fragment.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 
 public class MainActivity extends AppCompatActivity {

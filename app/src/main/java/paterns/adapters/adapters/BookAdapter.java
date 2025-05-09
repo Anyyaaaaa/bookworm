@@ -1,4 +1,4 @@
-package Paterns;
+package paterns.adapters.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -81,5 +81,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             title = itemView.findViewById(R.id.bookTitle);
             author = itemView.findViewById(R.id.bookAuthor);
         }
+    }
+
+    public void updateList(List<Book> newBooksList) {
+        this.bookList = newBooksList;
+        notifyDataSetChanged();
     }
 }

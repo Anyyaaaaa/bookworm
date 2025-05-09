@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AudioBookActivity">
+
+    <TextView
+        android:id="@+id/audioBookTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="40dp"
+        android:text="Назва аудіокниги"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/audioBookCover"
+        android:layout_width="262dp"
+        android:layout_height="323dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Обкладинка книги"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/audioBookTitle"
+        app:layout_constraintVertical_bias="0.252" />
+
+    <LinearLayout
+        android:id="@+id/playerControls"
+        android:layout_width="426dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="460dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/audioBookTitle">
+
+        <Button
+            android:id="@+id/forButton"
+            android:layout_width="30dp"
+            android:layout_height="32dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/ic_forwad"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/lastButton"
+            android:layout_width="30dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_skip_previous"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/ic_pause"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="30dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_skip_next"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/forButton2"
+            android:layout_width="30dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="40dp"
+
+            android:background="@drawable/ic_forwad"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chaptersTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:text="Розділи"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playerControls" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chaptersRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/chaptersTitle"
+    app:layout_constraintVertical_bias="0.0" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="328dp"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/playerControls"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audioBookTitle"
+        app:layout_constraintVertical_bias="0.977" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.116"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audioBookCover"
+        app:layout_constraintVertical_bias="1.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

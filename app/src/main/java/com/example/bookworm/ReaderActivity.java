@@ -40,7 +40,6 @@ public class ReaderActivity extends AppCompatActivity {
             Toast.makeText(this, "Немає шляху до книги", Toast.LENGTH_SHORT).show();
         }
     }
-
     private void openPDF(File file) {
         pdfView.fromFile(file)
                 .enableSwipe(true)

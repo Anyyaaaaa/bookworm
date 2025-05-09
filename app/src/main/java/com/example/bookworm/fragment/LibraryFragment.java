@@ -1,4 +1,4 @@
-package com.example.bookworm;
+package com.example.bookworm.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bookworm.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import androidx.viewpager2.widget.ViewPager2;
 
-import Paterns.LibraryPagerAdapter;
+import paterns.adapters.adapters.LibraryPagerAdapter;
 
 public class LibraryFragment extends Fragment {
 
@@ -45,6 +45,9 @@ public class LibraryFragment extends Fragment {
                             tab.setText("Буду читати");
                             break;
                         case 2:
+                            tab.setText("Прочитано");
+                            break;
+                        case 3:
                             tab.setText("Улюблене");
                             break;
                     }

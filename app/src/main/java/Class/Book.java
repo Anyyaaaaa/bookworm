@@ -7,9 +7,6 @@ public class Book {
     private String description;
     private String bookUrl;
 
-
-
-
     public Book() {}
 
     public Book(String title,String author, String imageUrl,String bookUrl,String genre) {
@@ -20,10 +17,11 @@ public class Book {
         this.bookUrl=bookUrl;
     }
 
-    public String getTitle() { return title; }
-    public String getAuthor(){return author;}
-    public String getGenre(){return genre;}
-    public String getImageUrl() { return imageUrl; }
-    public String getDescription() { return description; }
-    public String getBookUrl(){return bookUrl;}
+    public String getTitle() {return title;}
+    public String getAuthor() {return author;}
+    public String getGenre() {return genre;}
+    public String getBookUrl() {return bookUrl;}
+    public String getImageUrl() {return imageUrl;}
+    public String getDescription() {return description;}
 }
+

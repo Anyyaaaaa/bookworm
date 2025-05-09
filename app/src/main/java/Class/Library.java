@@ -17,20 +17,17 @@ public class Library {
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    // Додавання книги до бібліотеки користувача
-    public void addBookToLibrary(Book book, String collection) {
-        db.collection("users").document(userId)
-                .collection(collection)
-                .add(book)
-                .addOnSuccessListener(documentReference -> {
-                    // Книга успішно додана
-                })
-                .addOnFailureListener(e -> {
-                    // Обробка помилки
-                });
+
+
+    public void addBookToLibrary(Book book, String category) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(userId)
+                .collection(category)
+                .add(book);
     }
 
-    // Отримання книг з бібліотеки користувача
     public void getBooksFromLibrary(String collection, final BookCallback callback) {
         db.collection("users").document(userId)
                 .collection(collection)
@@ -40,7 +37,6 @@ public class Library {
                     callback.onBooksLoaded(books);
                 })
                 .addOnFailureListener(e -> {
-                    // Обробка помилки
                 });
     }
 }
