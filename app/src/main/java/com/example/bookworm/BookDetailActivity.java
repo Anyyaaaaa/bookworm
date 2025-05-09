@@ -16,6 +16,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
+import java.util.Arrays;
+import java.util.List;
+
 import Class.Library;
 import Class.Book;
 import Class.Review;
@@ -28,8 +31,6 @@ public class BookDetailActivity extends AppCompatActivity {
     private Button readButton, buttonGenre, submitReviewButton, listenButton;
     private EditText reviewInput;
     private RatingBar reviewRating;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,6 @@ public class BookDetailActivity extends AppCompatActivity {
 
             FirebaseFirestore.getInstance()
                     .collection("audioBook")
-
                     .whereEqualTo("title", selectedTitle)
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -140,12 +140,9 @@ public class BookDetailActivity extends AppCompatActivity {
 
                 if (!selectedCategory.isEmpty()) {
                     Book book = new Book(title, author, imageUrl, bookUrl, genre);
-                    Library library = new Library();
-                    library.addBookToLibrary(book, selectedCategory);
-
-                    Toast.makeText(BookDetailActivity.this,
-                            "Додано до \"" + item.getTitle() + "\"", Toast.LENGTH_SHORT).show();
+                    moveBookToCollection(book, selectedCategory);
                 }
+
                 return true;
             });
             popupMenu.show();
@@ -182,7 +179,71 @@ public class BookDetailActivity extends AppCompatActivity {
                 showMore.setText("Показати більше");
             }
         });
+
         reviewUtils.displayLastReview(BookDetailActivity.this, title, lastReview);
         reviewUtils.updateAverageRating(BookDetailActivity.this, title, ratingAve);
+    }
+
+    private void moveBookToCollection(Book book, String targetCollection) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String bookId = book.getTitle();  // 👈 Використовуємо назву як ID (або свій ID, якщо маєш)
+
+        // Список всіх колекцій
+        List<String> collections = Arrays.asList("Читаю", "Буду читати", "Прочитано", "Улюблене");
+
+        db.collection("users")
+                .document(userId)
+                .collection(targetCollection)
+                .document(bookId)
+                .get()
+                .addOnSuccessListener(targetDoc -> {
+                    if (targetDoc.exists()) {
+                        // Книга вже є в цій колекції
+                        Toast.makeText(BookDetailActivity.this, "Книга вже є в цій колекції", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Додаємо книгу до цільової колекції
+                        db.collection("users")
+                                .document(userId)
+                                .collection(targetCollection)
+                                .document(bookId)
+                                .set(book)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(BookDetailActivity.this, "Книгу додано до \"" + targetCollection + "\"", Toast.LENGTH_SHORT).show();
+
+                                    // Видаляємо книгу з інших колекцій
+                                    for (String collection : collections) {
+                                        if (!collection.equals(targetCollection)) {
+                                            db.collection("users")
+                                                    .document(userId)
+                                                    .collection(collection)
+                                                    .document(bookId)
+                                                    .get()
+                                                    .addOnSuccessListener(sourceDoc -> {
+                                                        if (sourceDoc.exists()) {
+                                                            db.collection("users")
+                                                                    .document(userId)
+                                                                    .collection(collection)
+                                                                    .document(bookId)
+                                                                    .delete()
+                                                                    .addOnSuccessListener(aVoid1 -> {
+                                                                        // Успішно видалено з попередньої колекції
+                                                                    })
+                                                                    .addOnFailureListener(e -> {
+                                                                        Toast.makeText(BookDetailActivity.this, "Помилка при видаленні з \"" + collection + "\"", Toast.LENGTH_SHORT).show();
+                                                                    });
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(BookDetailActivity.this, "Помилка при додаванні книги", Toast.LENGTH_SHORT).show();
+                                });
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(BookDetailActivity.this, "Помилка при перевірці цільової колекції", Toast.LENGTH_SHORT).show();
+                });
     }
 }

@@ -74,6 +74,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         ImageView image;
         TextView title;
         TextView author;
+        TextView description;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
